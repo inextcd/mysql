@@ -1,0 +1,39 @@
+
+http://www.rackspace.com/knowledge_center/article/mysql-connect-to-your-database-remotely
+
+Granting Access
+Granting access to a user from a remote host is fairly simple and can be accomplished from just a few steps. First you will need to login to your MySQL server as the root user. You can do this by typing the following command:
+
+# mysql -u root -p
+This will prompt you for your MySQL root password.
+
+Once you are logged into MySQL you need to issue the GRANT command that will enable access for your remote user. In this example we will be creating a brand new user (fooUser) that will have full access to the fooDatabase database.
+
+Keep in mind that this statement is not complete and will need some items changed. Please change 1.2.3.4 to the IP address that we obtained above. You will also need to change my_password with the password that you would like to use for fooUser.
+
+mysql> GRANT ALL ON fooDatabase.* TO fooUser@'1.2.3.4' IDENTIFIED BY 'my_password';
+This statement will grant ALL permissions to the newly created user fooUser with a password of 'my_password' when they connect from the IP address 1.2.3.4.
+
+
+Testing Remotely
+Now you can test your connection remotely. You can access your MySQL server from another Linux server:
+
+# mysql -u fooUser -p -h 44.55.66.77
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 17
+Server version: 5.0.45 Source distribution
+
+Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+
+mysql> _
+
+
+If you are using ubuntu, you have to use the following steps to avoid this error:
+
+ON THE SQL SERVER
+run the command sudo nano /etc/mysql/my.cnf
+comment bind-address = 127.0.0.1 using the # symbol
+restart your mysql server once.
+
+service mysqld restart
